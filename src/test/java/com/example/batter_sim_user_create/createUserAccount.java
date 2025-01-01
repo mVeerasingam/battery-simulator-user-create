@@ -11,7 +11,7 @@ public class createUserAccount {
                 "Test",
                 "Account",
                 "TestAccount@Mail.com",
-                "Secure1234@."
+                "Secure1234@!"
         );
         System.out.println(user);
     }
