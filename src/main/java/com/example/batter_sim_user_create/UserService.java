@@ -13,6 +13,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
     public UserAccount createUser(UserAccount userAccount) {
+        System.out.println("Creating User: " + userAccount);
         return  userRepository.save(userAccount);
     }
 

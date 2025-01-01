@@ -27,6 +27,7 @@ public class UserController {
 
     @PostMapping("/create")
     public UserAccount addUser(@Valid @RequestBody UserAccount userAccount){
+        System.out.println("Received user: " + userAccount);
         return userService.createUser(userAccount);
     }
 
