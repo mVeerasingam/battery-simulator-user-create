@@ -2,6 +2,8 @@ package com.example.batter_sim_user_create;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,9 +31,9 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public UserAccount addUser(@Valid @RequestBody UserAccount userAccount){
-        System.out.println("Received user: " + userAccount);
-        return userService.createUser(userAccount);
+    public ResponseEntity<UserAccount> createUser(@RequestBody UserAccount user) {
+        UserAccount createdUser = userService.createUser(user);
+        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/delete/{user_id}")

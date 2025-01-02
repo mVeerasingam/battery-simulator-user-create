@@ -1,5 +1,6 @@
 package com.example.batter_sim_user_create;
 
+import com.example.batter_sim_user_create.Exceptions.UserAlreadyExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,13 +15,14 @@ public class UserService {
         this.userRepository = userRepository;
     }
     public UserAccount createUser(UserAccount userAccount) {
+        // check if fields are unique - if not throws UserAlreadyExistsException (message warning on bad request)
         if (userRepository.existsByEmail(userAccount.getEmail())) {
-            throw new RuntimeException("A user with the email " + userAccount.getEmail() + " already exists.");
+            throw new UserAlreadyExistsException("A user with the email " + userAccount.getEmail() + " already exists.");
         }
         if (userRepository.existsByUserName(userAccount.getUserName())) {
-            throw new RuntimeException("A user with the Username " + userAccount.getUserName() + " already exists.");
+            throw new UserAlreadyExistsException("A user with the Username " + userAccount.getUserName() + " already exists.");
         }
-        System.out.println("Creating User: " + userAccount);
+
         return  userRepository.save(userAccount);
     }
 
