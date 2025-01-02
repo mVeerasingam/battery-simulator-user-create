@@ -6,6 +6,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @Validated
@@ -23,7 +24,7 @@ public class UserController {
     }
 
     @GetMapping("/getUser/{user_id}")
-    public UserAccount findUser(@PathVariable Long user_id, @Valid @RequestBody UserAccount userAccount){
+    public UserAccount findUser(@PathVariable UUID user_id, @Valid @RequestBody UserAccount userAccount){
         return userService.getUserById(user_id);
     }
 
@@ -34,7 +35,7 @@ public class UserController {
     }
 
     @DeleteMapping("/delete/{user_id}")
-    public void deleteUser(@PathVariable Long user_id){
+    public void deleteUser(@PathVariable UUID user_id){
         userService.deleteUser(user_id);
     }
 }

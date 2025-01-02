@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -13,6 +14,12 @@ public class UserService {
         this.userRepository = userRepository;
     }
     public UserAccount createUser(UserAccount userAccount) {
+        if (userRepository.existsByEmail(userAccount.getEmail())) {
+            throw new RuntimeException("A user with the email " + userAccount.getEmail() + " already exists.");
+        }
+        if (userRepository.existsByUserName(userAccount.getUserName())) {
+            throw new RuntimeException("A user with the Username " + userAccount.getUserName() + " already exists.");
+        }
         System.out.println("Creating User: " + userAccount);
         return  userRepository.save(userAccount);
     }
@@ -21,12 +28,12 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public UserAccount getUserById(Long user_id){
+    public UserAccount getUserById(UUID user_id){
         return userRepository.findById(user_id)
                 .orElseThrow(() -> new RuntimeException("ID " + user_id + " Not Found"));
     }
 
-    public void deleteUser(Long user_id){
+    public void deleteUser(UUID user_id){
         getUserById(user_id);
         userRepository.deleteById(user_id);
     }

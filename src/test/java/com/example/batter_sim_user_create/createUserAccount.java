@@ -2,11 +2,13 @@ package com.example.batter_sim_user_create;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.UUID;
+
 public class createUserAccount {
     @Test
     public void testLombok(){
         UserAccount user = new UserAccount(
-                1,
+                UUID.randomUUID(),
                 "TestAccount",
                 "Test",
                 "Account",

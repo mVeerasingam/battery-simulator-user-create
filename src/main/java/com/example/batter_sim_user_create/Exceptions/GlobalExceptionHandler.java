@@ -12,7 +12,7 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
+    // Validation Exception Handle
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
@@ -22,5 +22,11 @@ public class GlobalExceptionHandler {
             errors.put(fieldName, message);
         });
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
+
+    // Handle if the user already exists error
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<String> handleUserAlreadyExists(UserAlreadyExistsException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }

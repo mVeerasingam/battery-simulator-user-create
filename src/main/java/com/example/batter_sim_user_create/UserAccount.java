@@ -6,9 +6,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
+import org.springframework.data.annotation.Transient;
+
+import java.util.UUID;
 
 @Entity
 @Data
@@ -16,17 +18,17 @@ import lombok.*;
 @AllArgsConstructor
 public class UserAccount {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long user_id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID user_id;
 
     @NotBlank(message = "UserName Cannot Be Blank")
-    private String user_name;
+    private String userName;
 
     @NotBlank(message = "First Name Cannot Be Blank")
-    private String first_name;
+    private String firstName;
 
     @NotBlank(message = "Last Name Cannot Be Blank")
-    private String last_name;
+    private String lastName;
 
     @Email
     @NotBlank(message = "Email Cannot Be Blank")
