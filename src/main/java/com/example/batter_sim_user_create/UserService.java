@@ -20,7 +20,7 @@ public class UserService {
             throw new UserAlreadyExistsException("A user with the email " + userAccount.getEmail() + " already exists.");
         }
         if (userRepository.existsByUserName(userAccount.getUserName())) {
-            throw new UserAlreadyExistsException("A user with the Username " + userAccount.getUserName() + " already exists.");
+            throw new UserAlreadyExistsException("A user with the username " + userAccount.getUserName() + " already exists.");
         }
 
         return  userRepository.save(userAccount);
