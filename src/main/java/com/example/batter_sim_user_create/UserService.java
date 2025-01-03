@@ -28,10 +28,6 @@ public class UserService {
             throw new UserAlreadyExistsException("A user with the username " + userAccount.getUserName() + " already exists.");
         }
 
-        // Generate unique API key
-        String apiKey = generateUniqueApiKey();
-        userAccount.setApiKey(apiKey);
-
         return userRepository.save(userAccount);
     }
 
@@ -55,18 +51,6 @@ public class UserService {
         userRepository.deleteById(user_id);
     }
 
-    // Generate unique apiKey, used for the Simulation API
-    // this func is only to be used when creating or updating user
-    private String generateUniqueApiKey() {
-        String apiKey;
-        boolean isUnique;
-        do {
-            apiKey = UUID.randomUUID().toString();
-            isUnique = !userRepository.existsByApiKey(apiKey);
-        } while (!isUnique); // Repeat until a unique key is generated
-        return apiKey;
-    }
-
     public List<UserAccount> getAllUsers() {
         return userRepository.findAll();
     }
@@ -79,5 +63,9 @@ public class UserService {
     public UserAccount getUserByUserName(String userName) {
         return userRepository.findByUserName(userName)
                 .orElseThrow(() -> new UserNotFoundException("User with username " + userName + " not found"));
+    }
+
+    public boolean isValidUser(UUID user_id){
+        return userRepository.existsById(user_id);
     }
 }

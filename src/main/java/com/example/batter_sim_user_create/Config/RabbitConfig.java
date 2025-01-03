@@ -1,15 +1,40 @@
 package com.example.batter_sim_user_create.Config;
 
-import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.amqp.rabbit.annotation.EnableRabbit;
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 
 @Configuration
 public class RabbitConfig {
+
     @Bean
-    public Queue apiValidationQueue() {
-        return new Queue("api_validation", false);  // Durable = false for temporary queue
+    public Queue userValidationRequestQueue() {
+        return new Queue("user_validation_request", true);
+    }
+
+    @Bean
+    public Queue userValidationResponseQueue() {
+        return new Queue("user_validation_response", true);
+    }
+
+    @Bean
+    public Exchange userValidationExchange() {
+        return new DirectExchange("user_validation_exchange", true, false);
+    }
+
+    // Bind request queue to exchange
+    @Bean
+    public Binding bindRequestQueueToExchange() {
+        return BindingBuilder.bind(userValidationRequestQueue()).to(userValidationExchange())
+                .with("user.validation.request")
+                .noargs();
+    }
+
+    // Bind response queue to exchange
+    @Bean
+    public Binding bindResponseQueueToExchange() {
+        return BindingBuilder.bind(userValidationResponseQueue()).to(userValidationExchange())
+                .with("user.validation.response")
+                .noargs();
     }
 }
