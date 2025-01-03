@@ -61,9 +61,7 @@ public class UserService {
         String apiKey;
         boolean isUnique;
         do {
-            // Generate a random API key
             apiKey = UUID.randomUUID().toString();
-            // Check if the API key already exists in the database
             isUnique = !userRepository.existsByApiKey(apiKey);
         } while (!isUnique); // Repeat until a unique key is generated
         return apiKey;
