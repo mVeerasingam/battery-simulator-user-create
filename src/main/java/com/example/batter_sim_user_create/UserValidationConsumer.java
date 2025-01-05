@@ -25,11 +25,4 @@ public class UserValidationConsumer {
             System.err.println("Error during API validation: " + e.getMessage());
         }
     }
-
-
-    @RabbitListener(queues = "user_validation_response")
-    public void handleUserValidationResponse(String response) {
-        System.out.println("Received validation response: " + response);
-        // Process response i.e. if valid send back to simulation manager it can simulate and vise versa
-    }
 }
