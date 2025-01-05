@@ -3,10 +3,11 @@ package com.example.batter_sim_user_create;
 import com.example.batter_sim_user_create.Exceptions.UserAlreadyExistsException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -14,7 +15,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
 
     @Mock
@@ -43,11 +44,11 @@ public class UserServiceTest {
     public void testUserCreate() {
         when(userRepository.existsByEmail(user.getEmail())).thenReturn(false);
         when(userRepository.existsByUserName(user.getUserName())).thenReturn(false);
-        when(userRepository.save(user)).thenReturn(user);
+        when(userRepository.save(user)).thenReturn(user);  // This mock should return 'user'
 
         UserAccount createdUser = userService.createUser(user);
 
-        assertNotNull(createdUser);
+        assertNotNull(createdUser);  // This will fail if 'createdUser' is null
         assertEquals(user.getEmail(), createdUser.getEmail());
         assertEquals(user.getUserName(), createdUser.getUserName());
 
