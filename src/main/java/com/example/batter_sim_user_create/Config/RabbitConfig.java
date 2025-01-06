@@ -20,4 +20,6 @@ public class RabbitConfig {
     public Exchange userValidationExchange() {
         return new DirectExchange("user_validation_exchange", true, false);
     }
+
+
 }

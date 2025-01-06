@@ -10,17 +10,22 @@ import java.util.UUID;
 @Service
 public class UserValidationConsumer {
 
-    @Autowired
     private UserService userService;
-    @Autowired
     private RabbitTemplate rabbitTemplate;
+    @Autowired
+    public UserValidationConsumer(UserService userService, RabbitTemplate rabbitTemplate) {
+        this.userService = userService;
+        this.rabbitTemplate = rabbitTemplate;
+    }
 
     @RabbitListener(queues = "user_validation_request")
-    public void handleUserValidationRequest(UUID user_id) {
+    public void handleUserValidationRequest(String user_id) {
         try {
-            boolean isValid = userService.isValidUser(user_id);
+            UUID userUUID = UUID.fromString(user_id);
+            boolean isValid = userService.isValidUser(userUUID);
             String response = isValid ? "Valid" : "Invalid";
             rabbitTemplate.convertAndSend("user_validation_exchange", "user.validation.response", response);
+            System.out.println("Sent validation response for user: " + user_id);
         } catch (Exception e) {
             System.err.println("Error during API validation: " + e.getMessage());
         }
