@@ -1,6 +1,7 @@
 package com.example.batter_sim_user_create;
 
 import com.example.batter_sim_user_create.Exceptions.UserAlreadyExistsException;
+import com.example.batter_sim_user_create.Exceptions.UserNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -91,5 +92,33 @@ public class UserServiceTest {
         assertEquals("A user with the username TestAccount already exists.", thrownException.getMessage());
 
         verify(userRepository, never()).save(user);
+    }
+
+    // Test for User retrieval by ID (valid)
+    @Test
+    public void testGetUserByIdValid() {
+        UUID userId = user.getUser_id();
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+
+        UserAccount retrievedUser = userService.getUserById(userId);
+
+        assertNotNull(retrievedUser);
+        assertEquals(user.getUser_id(), retrievedUser.getUser_id());
+        assertEquals(user.getEmail(), retrievedUser.getEmail());
+    }
+
+    // Test for User retrieval by ID (invalid)
+    @Test
+    public void testGetUserByIdInvalid() {
+        UUID invalidUserId = UUID.randomUUID();
+        when(userRepository.findById(invalidUserId)).thenReturn(Optional.empty());
+
+        UserNotFoundException thrownException = assertThrows(
+                UserNotFoundException.class,
+                () -> userService.getUserById(invalidUserId),
+                "Expected getUserById() to throw, but it didn't"
+        );
+
+        assertEquals("User with ID " + invalidUserId + " not found", thrownException.getMessage());
     }
 }
